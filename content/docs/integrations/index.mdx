@@ -1,44 +1,140 @@
 ---
 title: 整合設定
-description: 連接 Google Search Console、Google Analytics 等服務
+description: 連接 Google Search Console、Google Analytics 等服務，釋放 Otlex 完整功能
 ---
 
-## 支援的整合
+## 為什麼需要整合？
 
-Otlex 支援以下服務整合：
+Otlex 透過整合外部服務來獲取更完整的數據，提供更精準的分析和建議。
 
-| 服務 | 功能 | 必要性 |
+| 整合效益 | 說明 |
+|---------|------|
+| **真實數據** | 取得實際的搜尋排名和流量數據，而非估算值 |
+| **全面分析** | 結合多種數據源，提供 360 度視角 |
+| **自動化** | 直接發布內容到你的平台，無需手動複製 |
+| **效率提升** | 減少在不同工具間切換的時間 |
+
+## 支援的整合服務
+
+### 數據整合
+
+| 服務 | 功能 | 重要性 |
 |-----|------|--------|
-| Google Search Console | 排名數據、搜尋查詢、反向連結 | 強烈建議 |
-| Google Analytics 4 | 流量數據、用戶行為 | 建議 |
-| CMS 整合 | 內容發布（Notion、WordPress 等） | 選用 |
-| CDN 整合 | AI Bot 追蹤 | 選用 |
+| **Google Search Console** | 搜尋排名、關鍵字數據、索引狀態、反向連結 | ⭐⭐⭐ 必要 |
+| **Google Analytics 4** | 流量分析、用戶行為、轉換追蹤 | ⭐⭐ 強烈建議 |
 
-## Google Search Console
+### 內容發布整合
 
-GSC 是最重要的整合，連接後可以獲得：
+| 平台 | 狀態 | 說明 |
+|-----|------|------|
+| **Notion** | ✅ 完整支援 | 發布到 Notion 頁面或資料庫 |
+| **Google Docs** | ✅ 完整支援 | 發布為 Google 文件 |
+| **WordPress** | ✅ 完整支援 | 發布為草稿或文章 |
+| **Shopify** | ✅ 完整支援 | 發布為部落格文章 |
+| **Webflow** | 🚧 Beta | 基本發布功能 |
 
-- 真實的搜尋排名數據
-- 關鍵字曝光與點擊
-- 網站索引狀態
-- 反向連結資訊
+## 整合優先順序建議
 
-### 連接步驟
+### 第一步：連接 Google Search Console
 
-1. 前往「設定」>「整合」
-2. 點擊「連接 Google Search Console」
-3. 使用 Google 帳號授權
-4. 選擇要連接的網站資源
+GSC 是 **最重要** 的整合，建議在使用 Otlex 之前優先完成：
 
-## Google Analytics 4
+- 提供真實的搜尋排名數據
+- 識別機會關鍵字
+- 追蹤 SEO 成效變化
+- 分析點擊率和曝光
 
-連接 GA4 可以獲得：
+沒有 GSC 整合，許多功能的效果會大打折扣。
 
-- 網站流量趨勢
-- 用戶來源分析
-- 頁面表現數據
+### 第二步：連接 Google Analytics 4
+
+GA4 整合可以幫助你：
+
+- 了解實際流量
+- 分析用戶行為
+- 追蹤轉換目標
+- 結合 SEO 與業務數據
+
+### 第三步：設定內容發布整合
+
+如果你使用 AI 內容生成功能，建議設定 CMS 整合：
+
+- 直接發布生成的文章
+- 省去複製貼上步驟
+- 保持格式完整
+
+## 整合管理
+
+### 查看整合狀態
+
+1. 進入「設定」>「整合」
+2. 查看已連接的服務
+3. 綠色勾號表示連接正常
+4. 紅色警告表示需要處理
+
+### 整合狀態說明
+
+| 狀態 | 說明 | 行動 |
+|-----|------|------|
+| ✅ **已連接** | 整合正常運作 | 無需處理 |
+| ⚠️ **需要重新授權** | Token 過期 | 點擊「重新連接」 |
+| 🔴 **連接失敗** | 授權被撤銷或有錯誤 | 重新連接 |
+| ⏳ **同步中** | 正在同步數據 | 等待完成 |
+
+### 資料同步頻率
+
+| 服務 | 同步頻率 | 數據延遲 |
+|-----|---------|---------|
+| Google Search Console | 每 6 小時 | 2-3 天（Google 限制） |
+| Google Analytics 4 | 每日 | 24-48 小時 |
+| CMS 整合 | 即時（發布時） | 無 |
+
+## 權限與隱私
+
+### 我們只要求最小必要權限
+
+| 服務 | 權限範圍 |
+|-----|---------|
+| GSC | 唯讀：搜尋數據、網站列表 |
+| GA4 | 唯讀：分析數據 |
+| Notion | 讀寫：你分享的頁面/資料庫 |
+| Google Docs | 讀寫：建立和編輯文件 |
+| WordPress | 讀寫：文章發布 |
+
+### 資料安全保證
+
+- **加密存儲**：所有 Token 使用 AES-256 加密
+- **最小權限**：只要求必要的權限範圍
+- **不會分享**：你的數據不會分享給第三方
+- **可隨時撤銷**：你可以隨時中斷連接
+
+## 常見問題
+
+### 必須連接所有整合嗎？
+
+不必。但強烈建議至少連接 Google Search Console，這是獲得最佳體驗的關鍵。
+
+### 整合會存取我的其他數據嗎？
+
+不會。每個整合只存取特定、必要的數據。例如：
+- GSC 整合不會存取你的 Gmail
+- GA4 整合不會存取你的 Google Drive
+
+### 可以同時連接多個 GSC 資源嗎？
+
+每個品牌只能連接一個 GSC 資源。如果你有多個網站，請建立多個品牌。
+
+### 整合失效怎麼辦？
+
+1. 檢查是否在 Google 帳戶中撤銷了授權
+2. 嘗試中斷連接後重新連接
+3. 確認 GSC/GA4 資源仍存在
+4. 聯繫客服尋求協助
 
 ## 下一步
 
-- [連接 Google Search Console](/docs/integrations/google-search-console)
-- [連接 Google Analytics](/docs/integrations/google-analytics)
+<Cards>
+  <Card title="連接 Google Search Console" href="/docs/integrations/google-search-console" />
+  <Card title="連接 Google Analytics" href="/docs/integrations/google-analytics" />
+  <Card title="設定 CMS 整合" href="/docs/integrations/cms-integrations" />
+</Cards>
