@@ -1,77 +1,205 @@
 ---
-title: 整站審核
-description: 檢查全站共用設定，確保網站基礎 SEO 正確
+title: 整站稽核
+description: 檢查全站共用設定與技術 SEO 基礎，確保網站 SEO 基礎架構正確
 ---
 
-## 什麼是整站審核？
+## 什麼是整站稽核？
 
-整站審核（Site Audit）檢查的是網站層級的設定，而非單一頁面。這些設定影響整個網站的 SEO 表現。
+整站稽核（Site Audit）檢查的是**網站層級**的設定，而非單一頁面。這些設定影響整個網站的 SEO 表現，是 SEO 的基礎架構。
 
-## 檢查項目
+### 與單頁稽核的差異
+
+| 項目 | 單頁稽核 | 整站稽核 |
+|-----|---------|---------|
+| 檢查範圍 | 單一頁面 | 整個網站 |
+| 檢查內容 | 內容、Meta、Schema | 技術設定、檔案配置 |
+| 執行時間 | 30秒-2分鐘 | 1-5分鐘 |
+| 適用時機 | 頁面優化、發文前檢查 | 網站上線、定期健檢 |
+
+## 檢查項目詳解
 
 ### robots.txt
 
-檢查項目：
-- ✅ 檔案是否存在
-- ✅ 語法是否正確
-- ✅ 是否意外封鎖重要頁面
-- ✅ Sitemap 連結是否正確
+`robots.txt` 是告訴搜尋引擎哪些頁面可以爬取、哪些不行的檔案。
+
+**檢查項目：**
+
+| 項目 | 說明 | 影響程度 |
+|-----|------|---------|
+| 檔案是否存在 | 根目錄是否有 robots.txt | 高 |
+| 語法正確性 | 是否有語法錯誤 | 高 |
+| 重要頁面封鎖 | 是否意外封鎖了重要頁面 | 高 |
+| Sitemap 宣告 | 是否包含 Sitemap 連結 | 中 |
+| 重複規則 | 是否有衝突或重複的規則 | 低 |
+
+**常見問題與修復：**
+
+```txt
+# 錯誤範例：封鎖了所有頁面
+User-agent: *
+Disallow: /
+
+# 正確範例
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: https://example.com/sitemap.xml
+```
 
 ### sitemap.xml
 
-檢查項目：
-- ✅ 檔案是否存在
-- ✅ 格式是否正確
-- ✅ 是否包含重要頁面
-- ✅ lastmod 日期是否更新
-- ✅ 是否有過多 404 頁面
+Sitemap 幫助搜尋引擎發現並了解網站的頁面結構。
+
+**檢查項目：**
+
+| 項目 | 說明 | 影響程度 |
+|-----|------|---------|
+| 檔案是否存在 | 根目錄是否有 sitemap.xml | 高 |
+| 格式正確性 | XML 格式是否有效 | 高 |
+| URL 有效性 | 列出的 URL 是否可訪問 | 高 |
+| lastmod 日期 | 是否有更新日期且正確 | 中 |
+| 頁面涵蓋度 | 是否包含所有重要頁面 | 中 |
+| 404 頁面 | 是否包含已不存在的頁面 | 中 |
+
+**正確格式範例：**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://example.com/</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://example.com/about</loc>
+    <lastmod>2024-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
+```
 
 ### llms.txt
 
-這是給 AI 爬蟲的指引檔案：
-- ✅ 檔案是否存在
-- ✅ 格式是否符合規範
-- ✅ 內容是否完整
+`llms.txt` 是給 AI 爬蟲（如 GPTBot、ClaudeBot）的指引檔案，說明網站內容供 AI 參考。
+
+**檢查項目：**
+
+| 項目 | 說明 | 影響程度 |
+|-----|------|---------|
+| 檔案是否存在 | 根目錄是否有 llms.txt | 中 |
+| 格式正確性 | 是否符合 llms.txt 規範 | 中 |
+| 內容完整性 | 是否提供足夠的網站資訊 | 低 |
+
+**基本範例：**
+
+```txt
+# Example Company
+> A brief description of what your company does
+
+## About
+We are a technology company focused on...
+
+## Products
+- Product A: Description
+- Product B: Description
+
+## Contact
+- Website: https://example.com
+- Email: contact@example.com
+```
+
+<Callout type="info">
+  **llms.txt 是新興標準**：雖然不是所有 AI 搜尋引擎都支援，但建立這個檔案可以幫助 AI 更好地理解你的網站。
+</Callout>
 
 ### Favicon
 
-檢查項目：
-- ✅ 是否存在 favicon
-- ✅ 格式是否正確（ICO/PNG/SVG）
-- ✅ Apple Touch Icon 是否設定
+Favicon 是顯示在瀏覽器分頁、書籤的網站小圖示。
 
-### 安全性
+**檢查項目：**
 
-基本安全檢查：
-- ✅ HTTPS 是否啟用
-- ✅ HTTP 是否正確導向 HTTPS
-- ✅ HSTS 是否設定
+| 項目 | 說明 | 影響程度 |
+|-----|------|---------|
+| 是否存在 | 是否有 favicon 設定 | 低 |
+| 格式正確 | 是否使用支援的格式 | 低 |
+| Apple Touch Icon | 是否設定 iOS 圖示 | 低 |
+| 尺寸完整 | 是否提供多種尺寸 | 低 |
 
-## 執行整站審核
+### HTTPS 與安全性
 
-1. 進入「SEO Audit」頁面
-2. 切換到「整站審核」分頁
-3. 點擊「執行整站審核」
-4. 等待檢查完成（通常 1-2 分鐘）
+**檢查項目：**
+
+| 項目 | 說明 | 影響程度 |
+|-----|------|---------|
+| HTTPS 啟用 | 網站是否使用 HTTPS | 高 |
+| HTTP 導向 | HTTP 是否正確導向 HTTPS | 高 |
+| 混合內容 | 是否有 HTTP 資源在 HTTPS 頁面 | 中 |
+| HSTS 設定 | 是否啟用 HSTS | 低 |
+| SSL 憑證 | 憑證是否有效、未過期 | 高 |
+
+### 其他全站檢查
+
+| 項目 | 說明 |
+|-----|------|
+| **預設 Meta Tags** | 是否有全站預設的 Title/Description 模板 |
+| **語言設定** | html lang 屬性是否正確設定 |
+| **字元編碼** | 是否宣告 UTF-8 編碼 |
+| **Viewport** | 是否有行動裝置 viewport 設定 |
+
+## 執行整站稽核
+
+### 步驟
+
+1. 進入「AI Search 稽核」頁面
+2. 切換到「整站」分頁
+3. 確認要稽核的網站（會顯示目前品牌的網址）
+4. 點擊「執行整站稽核」
+5. 等待檢查完成（通常 1-5 分鐘）
+
+### 稽核過程
+
+1. **robots.txt 檢查**：讀取並解析 robots.txt
+2. **sitemap.xml 檢查**：讀取並驗證 sitemap
+3. **llms.txt 檢查**：檢查 AI 爬蟲指引
+4. **安全性檢查**：測試 HTTPS 和安全設定
+5. **其他檔案檢查**：favicon、manifest 等
+6. **生成報告**：彙整所有檢查結果
 
 ## 解讀結果
 
 ### 狀態標示
 
-| 狀態 | 說明 |
-|-----|------|
-| ✅ Pass | 通過檢查 |
-| ⚠️ Warning | 有改善空間 |
-| ❌ Fail | 有問題需要修復 |
-| ⏭️ Skip | 無法檢查（如無權限） |
+| 狀態 | 說明 | 建議行動 |
+|-----|------|---------|
+| ✅ **Pass** | 檢查通過 | 無需處理 |
+| ⚠️ **Warning** | 有改善空間 | 建議改善 |
+| ❌ **Fail** | 有問題需要修復 | 儘快修復 |
+| ⏭️ **Skip** | 無法檢查 | 確認權限或設定 |
 
-### 建議優先處理順序
+### 整站健康分數
 
-1. **robots.txt 問題** - 可能導致頁面無法被索引
-2. **sitemap.xml 問題** - 影響爬蟲效率
-3. **HTTPS 問題** - 影響排名和信任度
-4. **llms.txt** - 提升 AI 搜尋可見度
-5. **Favicon** - 影響較小但易修復
+整站稽核會產生一個 0-100 的健康分數：
+
+| 分數範圍 | 評級 | 說明 |
+|---------|------|------|
+| 90-100 | 🟢 優秀 | 基礎設定完善 |
+| 70-89 | 🟡 良好 | 有小問題需處理 |
+| 50-69 | 🟠 中等 | 有重要問題需修復 |
+| 0-49 | 🔴 待改善 | 基礎設定有嚴重問題 |
+
+### 優先處理順序建議
+
+1. **🔴 HTTPS 問題**：影響排名和使用者信任
+2. **🔴 robots.txt 封鎖問題**：可能導致頁面無法被索引
+3. **🟡 sitemap.xml 問題**：影響爬蟲效率
+4. **🟡 404 頁面清理**：浪費爬蟲預算
+5. **🟢 llms.txt 新增**：提升 AI 搜尋可見度
+6. **🟢 Favicon 設定**：影響較小但易修復
 
 ## 常見問題修復指南
 
@@ -83,28 +211,59 @@ description: 檢查全站共用設定，確保網站基礎 SEO 正確
 User-agent: *
 Allow: /
 
+# 封鎖不需要索引的目錄
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+
+# Sitemap 位置
 Sitemap: https://yoursite.com/sitemap.xml
 ```
 
-### sitemap.xml 格式錯誤
+### sitemap.xml 包含 404 頁面
 
-確保使用正確的 XML 格式：
+1. 檢查報告中列出的 404 URL
+2. 從 sitemap.xml 中移除這些 URL
+3. 如果使用 CMS，重新生成 sitemap
+4. 重新執行整站稽核確認
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://yoursite.com/page1</loc>
-    <lastmod>2024-01-15</lastmod>
-  </url>
-</urlset>
+### HTTP 未導向 HTTPS
+
+在伺服器設定中加入導向規則：
+
+**Apache (.htaccess)**
+```apache
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 ```
 
-### llms.txt 不存在
+**Nginx**
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$server_name$request_uri;
+}
+```
 
-在網站根目錄建立 `llms.txt` 檔案，說明網站內容供 AI 參考。
+### 缺少 llms.txt
+
+在網站根目錄建立 `llms.txt` 檔案，內容參考上方範例。
+
+## 定期執行建議
+
+| 情況 | 建議頻率 |
+|-----|---------|
+| 網站穩定運作 | 每月一次 |
+| 近期有技術變更 | 變更後立即執行 |
+| 網站改版後 | 改版後立即執行 |
+| 發現索引問題 | 立即執行排查 |
 
 ## 下一步
 
-- [執行頁面審核](/docs/seo-audit/first-audit)
-- [設定定期審核](/docs/seo-audit/scheduled-audits)
+<Cards>
+  <Card title="執行單頁稽核" href="/docs/seo-audit/first-audit" />
+  <Card title="設定定期稽核" href="/docs/seo-audit/scheduled-audits" />
+  <Card title="理解稽核建議" href="/docs/seo-audit/understanding-recommendations" />
+</Cards>
