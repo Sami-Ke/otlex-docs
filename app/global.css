@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+/* Fix: Hide mobile header on desktop to prevent overlap */
+@media (min-width: 768px) {
+  #nd-subnav {
+    display: none !important;
+  }
+}
