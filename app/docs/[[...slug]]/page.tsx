@@ -28,6 +28,9 @@ export default async function Page({ params }: PageProps) {
       tableOfContent={{
         style: 'clerk',
       }}
+      breadcrumb={{
+        enabled: false,
+      }}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
