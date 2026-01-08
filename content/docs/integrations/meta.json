@@ -1,0 +1,9 @@
+{
+  "title": "整合設定",
+  "pages": [
+    "index",
+    "google-search-console",
+    "google-analytics",
+    "cms-integrations"
+  ]
+}

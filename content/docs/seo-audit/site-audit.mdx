@@ -1,0 +1,110 @@
+---
+title: 整站審核
+description: 檢查全站共用設定，確保網站基礎 SEO 正確
+---
+
+## 什麼是整站審核？
+
+整站審核（Site Audit）檢查的是網站層級的設定，而非單一頁面。這些設定影響整個網站的 SEO 表現。
+
+## 檢查項目
+
+### robots.txt
+
+檢查項目：
+- ✅ 檔案是否存在
+- ✅ 語法是否正確
+- ✅ 是否意外封鎖重要頁面
+- ✅ Sitemap 連結是否正確
+
+### sitemap.xml
+
+檢查項目：
+- ✅ 檔案是否存在
+- ✅ 格式是否正確
+- ✅ 是否包含重要頁面
+- ✅ lastmod 日期是否更新
+- ✅ 是否有過多 404 頁面
+
+### llms.txt
+
+這是給 AI 爬蟲的指引檔案：
+- ✅ 檔案是否存在
+- ✅ 格式是否符合規範
+- ✅ 內容是否完整
+
+### Favicon
+
+檢查項目：
+- ✅ 是否存在 favicon
+- ✅ 格式是否正確（ICO/PNG/SVG）
+- ✅ Apple Touch Icon 是否設定
+
+### 安全性
+
+基本安全檢查：
+- ✅ HTTPS 是否啟用
+- ✅ HTTP 是否正確導向 HTTPS
+- ✅ HSTS 是否設定
+
+## 執行整站審核
+
+1. 進入「SEO Audit」頁面
+2. 切換到「整站審核」分頁
+3. 點擊「執行整站審核」
+4. 等待檢查完成（通常 1-2 分鐘）
+
+## 解讀結果
+
+### 狀態標示
+
+| 狀態 | 說明 |
+|-----|------|
+| ✅ Pass | 通過檢查 |
+| ⚠️ Warning | 有改善空間 |
+| ❌ Fail | 有問題需要修復 |
+| ⏭️ Skip | 無法檢查（如無權限） |
+
+### 建議優先處理順序
+
+1. **robots.txt 問題** - 可能導致頁面無法被索引
+2. **sitemap.xml 問題** - 影響爬蟲效率
+3. **HTTPS 問題** - 影響排名和信任度
+4. **llms.txt** - 提升 AI 搜尋可見度
+5. **Favicon** - 影響較小但易修復
+
+## 常見問題修復指南
+
+### robots.txt 不存在
+
+在網站根目錄建立 `robots.txt` 檔案：
+
+```txt
+User-agent: *
+Allow: /
+
+Sitemap: https://yoursite.com/sitemap.xml
+```
+
+### sitemap.xml 格式錯誤
+
+確保使用正確的 XML 格式：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://yoursite.com/page1</loc>
+    <lastmod>2024-01-15</lastmod>
+  </url>
+</urlset>
+```
+
+### llms.txt 不存在
+
+在網站根目錄建立 `llms.txt` 檔案，說明網站內容供 AI 參考。
+
+## 下一步
+
+- [執行頁面審核](/docs/seo-audit/first-audit)
+- [設定定期審核](/docs/seo-audit/scheduled-audits)
