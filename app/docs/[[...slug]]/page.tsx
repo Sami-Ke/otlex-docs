@@ -6,6 +6,7 @@ import {
   DocsDescription,
   DocsTitle,
 } from 'fumadocs-ui/page';
+import type { TOCItemType } from 'fumadocs-core/toc';
 import { notFound } from 'next/navigation';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 
@@ -18,9 +19,12 @@ export default async function Page({ params }: PageProps) {
   const page = source.getPage(slug);
   if (!page) notFound();
 
-  // Access body and toc directly from page.data
-  const MDX = (page.data as any).body;
-  const toc = (page.data as any).toc;
+  const data = page.data as unknown;
+  const body = typeof data === 'object' && data !== null ? (data as { body?: unknown }).body : undefined;
+  const toc = typeof data === 'object' && data !== null ? (data as { toc?: TOCItemType[] }).toc : undefined;
+
+  if (typeof body !== 'function') notFound();
+  const MDX = body as React.ComponentType<{ components?: typeof defaultMdxComponents }>;
 
   return (
     <DocsPage
@@ -35,8 +39,7 @@ export default async function Page({ params }: PageProps) {
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        <MDX components={defaultMdxComponents as any} />
+        <MDX components={defaultMdxComponents} />
       </DocsBody>
     </DocsPage>
   );

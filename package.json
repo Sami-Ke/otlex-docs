@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mdxeditor/editor": "^3.52.3",
     "@tailwindcss/postcss": "^4.1.18",
     "fumadocs-core": "^16.4.4",
     "fumadocs-mdx": "^14.2.4",
     "fumadocs-ui": "^16.4.4",
+    "gray-matter": "^4.0.3",
     "next": "^16.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
