@@ -1,0 +1,287 @@
+---
+title: AI Bot Tracking
+description: 追蹤 AI 搜尋引擎與 AI 應用平台對你網站的存取行為，掌握傳統分析工具看不到的流量來源
+---
+
+## 你可以用它做什麼
+
+AI Bot Tracking 讓你追蹤來自 AI 生態系統的流量，這是傳統 Google Analytics 看不到的數據：
+
+- **了解 AI 如何使用你的內容**：哪些頁面被 AI 爬蟲抓取、被引用
+- **追蹤 AI 帶來的實際流量**：用戶從 ChatGPT、Perplexity 等平台點擊進入
+- **優化 AI 可見性**：找出高價值頁面，優先優化 AI 搜尋表現
+
+<Callout type="info">
+  **為什麼 GA4 看不到這些流量？** AI 爬蟲不執行 JavaScript，所以 GA4 追蹤不到。而從 AI 平台點擊過來的流量，在 GA4 中可能被歸類為 direct 或 referral，無法精確區分。
+</Callout>
+
+## 快速開始
+
+1. **取得 API Key**：進入「設定 > AI Bot Tracking」，複製你的 `tracking_api_key`
+2. **選擇整合方式**：根據你的技術環境選擇 Cloudflare Worker / 通用整合 / CDN 整合
+3. **部署追蹤代碼**：依照下方指南完成部署
+4. **驗證資料**：24-48 小時後回來檢查是否有資料進入
+5. **開始分析**：使用四大視圖了解 AI 流量狀況
+
+## 核心概念：Bot vs Referrer
+
+理解這兩種資料的差異是正確分析的關鍵：
+
+| 類型 | 什麼是 | 代表什麼 | 範例 |
+|------|--------|----------|------|
+| **Bot 訪問** | AI 爬蟲機器人存取你的網頁 | 你的內容被 AI 系統「閱讀」了 | GPTBot 爬取你的文章 |
+| **Referrer 點擊** | 用戶從 AI 平台點擊連結進入你的網站 | 有人在 AI 對話中看到你的內容並點擊 | 用戶在 ChatGPT 看到推薦連結並點擊 |
+
+### 如何解讀
+
+- **只有 Bot 訪問，沒有 Referrer 點擊**：AI 在抓取你的內容，但可能還沒有引用給用戶
+- **Bot 和 Referrer 都有**：最理想的狀態，AI 不只抓取還推薦給用戶
+- **只有 Referrer 點擊，沒有 Bot 訪問**：可能是用戶手動貼連結到 AI 對話中
+
+## 四大分析視圖
+
+### 總覽（Overview）
+
+快速掌握整體 AI 流量狀況：
+
+| KPI 卡片 | 定義 | 如何解讀 |
+|----------|------|----------|
+| Bot 訪問總數 | 選定時間內的 AI 爬蟲訪問次數 | 越多代表越多 AI 系統在關注你的內容 |
+| Bot 訪問頁面數 | 被爬蟲訪問過的不重複頁面數 | 覆蓋率指標，數字越大代表更多頁面被 AI 收錄 |
+| Bot 週對週變化 | 本週 vs 上週的變化百分比 | 觀察趨勢，持續成長是好現象 |
+| Referrer 點擊總數 | 用戶從 AI 平台點擊進入的次數 | **最有價值的指標**，代表真實流量 |
+| 點擊頁面數 | 被點擊進入的不重複頁面數 | 哪些頁面在 AI 推薦中最受歡迎 |
+| 點擊率 | 點擊數 / 訪問數 | 內容被引用後的轉化率 |
+
+**雙軸趨勢圖**：左軸（綠色）= Bot 訪問，右軸（藍色）= Referrer 點擊。兩條線同時上升是最理想的狀態。
+
+### Bot 訪問（Bot Visits）
+
+深入分析 AI 爬蟲行為：
+
+- **訪問趨勢圖**：14 天分頁顯示，觀察爬取頻率
+- **活動矩陣**：日期 × 平台的熱力圖，找出哪些 AI 最活躍
+- **平台分類**：各 Bot 的訪問統計，了解哪個 AI 系統最關注你
+- **熱門頁面**：最常被爬取的 10 個頁面
+
+### Referrer 點擊（Referrer Clicks）
+
+分析從 AI 平台來的實際流量：
+
+- **點擊趨勢圖**：14 天分頁顯示
+- **活動矩陣**：日期 × 平台的熱力圖
+- **平台分類**：各 AI 應用的點擊統計
+- **熱門頁面**：最多人點擊進入的 10 個頁面
+
+### 頁面分析（Page Analysis）
+
+以頁面為中心的綜合排名：
+
+| 欄位 | 說明 |
+|------|------|
+| 綜合分數 | 點擊數 × 3 + 訪問數 × 1（點擊權重更高） |
+| 排名徽章 | 前 3 名以金銀銅色區分 |
+| Bot 提供者 | 哪些 AI 爬蟲訪問過這個頁面 |
+| Referrer 平台 | 哪些 AI 應用帶來點擊 |
+
+**如何使用 Page Analysis 做事**：
+1. 找出高分頁面 → 這些是你的 AI 流量明星
+2. 分析這些頁面有什麼共同特點（格式、長度、結構）
+3. 把學到的模式應用到其他頁面
+4. 高訪問低點擊的頁面 → 內容可能不夠吸引人被引用
+
+## 追蹤的 AI 平台
+
+### Bot Provider（AI 爬蟲機器人）
+
+| Provider | User-Agent 特徵 | 說明 |
+|----------|-----------------|------|
+| OpenAI | GPTBot, ChatGPT-User | ChatGPT 訓練與即時搜尋 |
+| Anthropic | anthropic-ai, Claude-Web | Claude 相關爬蟲 |
+| Perplexity | PerplexityBot | Perplexity AI 搜尋 |
+| Google | Google-Extended | Bard/Gemini 訓練資料 |
+| Microsoft | bingbot (AI variant) | Bing AI 相關爬蟲 |
+| Meta | meta-externalagent | Meta AI 爬蟲 |
+| xAI | Grok | Grok 相關爬蟲 |
+| DeepSeek | DeepSeek | DeepSeek 爬蟲 |
+| Mistral | MistralBot | Mistral AI 爬蟲 |
+
+### Referrer Platform（AI 應用平台）
+
+ChatGPT、Claude、Perplexity、Gemini、Bing Chat、Copilot、You.com、Poe、Grok 等。
+
+## 整合設定詳解
+
+### 方式一：Cloudflare Worker（推薦）
+
+最簡單的方式，適合使用 Cloudflare 的網站。
+
+**前置條件**：
+- 網站已使用 Cloudflare
+- 有 Cloudflare 帳號管理權限
+
+**設定步驟**：
+
+1. **取得 API Key**
+   - 進入 Otlex「設定 > AI Bot Tracking」
+   - 複製你的 `tracking_api_key`
+
+2. **建立 Cloudflare Worker**
+   - 登入 Cloudflare Dashboard
+   - 進入 Workers & Pages > Create Worker
+   - 貼上 Otlex 提供的 Worker 代碼
+   - 將 `tracking_api_key` 設為環境變數
+
+3. **設定路由**
+   - 在 Worker 設定中新增路由
+   - 設定觸發條件：`yourdomain.com/*`
+
+4. **驗證**
+   - 等待 24-48 小時
+   - 回到 Otlex 檢查是否有資料進入
+
+**常見錯誤**：
+- Worker 未部署到正確的網域
+- API Key 打錯或未設為環境變數
+- 路由設定錯誤（漏掉子網域）
+
+### 方式二：通用整合（伺服器端）
+
+適合有後端開發能力的團隊。
+
+**前置條件**：
+- 可以修改伺服器端代碼
+- 能夠存取 request headers
+
+**設定原理**：
+在伺服器端檢查每個請求的 User-Agent 和 Referer，若符合 AI bot/referrer 特徵，就呼叫 Otlex API 回報。
+
+**基本流程**：
+```
+收到請求 → 檢查 User-Agent/Referer → 符合 AI 特徵 → 呼叫 Otlex API
+```
+
+**驗證方式**：
+- 使用 curl 模擬 AI bot 請求
+- 檢查 Otlex 是否收到資料
+
+### 方式三：CDN API 整合
+
+適合使用 Fastly、CloudFront 等 CDN 的網站。
+
+**前置條件**：
+- 使用支援的 CDN（Fastly、CloudFront）
+- 有 CDN 日誌存取權限
+
+**設定原理**：
+將 CDN 日誌同步到 Otlex，系統會自動解析 AI bot/referrer 流量。
+
+## 時間範圍選擇
+
+所有視圖共享同一個時間範圍選擇器（位於頁面右上角）：
+
+- **最近 7 天**（預設）：快速檢視近期狀況
+- **最近 30 天**：觀察月度趨勢
+- **最近 90 天**：長期趨勢分析
+
+## 匯出功能
+
+Bot Visits 和 Referrer Clicks 分頁都支援 **CSV 匯出**：
+
+1. 點擊頁面右上角的「匯出」按鈕
+2. 選擇要匯出的資料範圍
+3. 下載 CSV 檔案
+
+匯出內容包含：統計資料、活動矩陣、平台分類、頁面列表。
+
+## FAQ / 故障排除
+
+### 設定完成但看不到資料
+
+**症狀**：整合設定完成超過 48 小時，但頁面顯示「尚無資料」
+
+**排查步驟**：
+
+| 檢查項目 | 如何檢查 | 解法 |
+|----------|----------|------|
+| API Key 是否正確 | 比對「設定」頁面的 Key | 重新複製貼上 |
+| 整合是否生效 | 檢查 Cloudflare Worker 狀態 | 確認 Worker 已部署且路由正確 |
+| 網站是否有 AI 流量 | 檢查伺服器日誌中的 User-Agent | 若真的沒有 AI 流量，這是正常的 |
+| 是否被防火牆擋住 | 檢查 WAF/防火牆規則 | 確保沒有阻擋 AI bots |
+
+### 數字怪怪的/不合理
+
+**症狀**：數字突然暴增或暴減、看起來不合理
+
+**可能原因**：
+
+| 症狀 | 可能原因 | 解法 |
+|------|----------|------|
+| 訪問暴增 | 可能有新的 AI 系統開始爬取、或被大量引用 | 檢查 Bot Provider 分布 |
+| 訪問歸零 | 整合失效、API Key 過期、被阻擋 | 檢查整合設定和防火牆 |
+| 只有 Bot 沒有 Referrer | 正常現象，AI 爬取但尚未引用給用戶 | 持續觀察 |
+| 只有 Referrer 沒有 Bot | 用戶手動貼連結、或 Bot 追蹤漏掉 | 檢查整合設定 |
+
+### Referrer 資料不完整
+
+**症狀**：知道有人從 AI 平台點進來，但 Otlex 沒記錄到
+
+**可能原因**：
+- 部分 AI 平台不傳送 Referer header
+- HTTPS → HTTP 的跳轉會遺失 Referer
+- 用戶使用隱私模式或擴充套件
+
+## 最佳實踐
+
+### 歡迎 AI Bot 的設定
+
+確保你的網站對 AI bot 友善：
+
+**1. 檢查 robots.txt**
+```
+# 允許主要 AI bots
+User-agent: GPTBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+```
+
+**2. 考慮建立 llms.txt**
+
+llms.txt 是一個新興標準，讓你告訴 AI 如何使用你的內容：
+- 放在網站根目錄：`yourdomain.com/llms.txt`
+- 說明內容授權方式、引用偏好
+
+### 監控異常尖峰
+
+- **爬取暴增可能代表**：被新的 AI 系統收錄、內容被大量引用
+- **爬取暴減可能代表**：被意外阻擋、整合失效
+- **建議**：設定每週檢視習慣，留意週對週變化超過 50% 的情況
+
+### 把 AI 流量轉成行動
+
+| 發現 | 行動建議 |
+|------|----------|
+| 某頁面 AI 流量特別高 | 強化該頁面的 SEO、新增相關內容、加入內部連結 |
+| 某 AI 平台特別活躍 | 針對該平台優化（例如：Perplexity 偏好結構化內容） |
+| 高訪問低點擊 | 檢查內容是否足夠吸引人被引用、標題是否清晰 |
+| 某主題沒有 AI 流量 | 該主題可能 AI 覆蓋不足，可考慮建立更多相關內容 |
+
+### 與其他功能整合
+
+- **SEO 稽核**：高 AI 流量頁面優先做 AEO（Answer Engine Optimization）檢查
+- **內容地圖**：檢查高 AI 流量頁面的內部連結是否充足
+- **排名追蹤**：對比 Google 排名和 AI 流量的相關性
+
+## 下一步
+
+<Cards>
+  <Card title="連接 Google Search Console" href="/docs/integrations/google-search-console" />
+  <Card title="排名追蹤" href="/docs/ranking" />
+  <Card title="執行 SEO 稽核" href="/docs/getting-started/first-audit" />
+  <Card title="內容地圖" href="/docs/content-map" />
+</Cards>
