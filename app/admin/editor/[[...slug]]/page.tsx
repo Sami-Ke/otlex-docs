@@ -30,6 +30,7 @@ export default function EditorPage() {
 
   const [content, setContent] = useState<string | null>(null);
   const [title, setTitle] = useState<string>('');
+  const [sha, setSha] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -48,7 +49,7 @@ export default function EditorPage() {
 
     async function fetchFile() {
       try {
-        const res = await fetch(`/api/mdx/${encodeURIComponent(slug)}`);
+        const res = await fetch(`/api/admin/mdx/${encodeURIComponent(slug)}`);
         if (!res.ok) {
           if (res.status === 404) {
             throw new Error('File not found');
@@ -58,6 +59,7 @@ export default function EditorPage() {
         const data: MdxFileResponse = await res.json();
         setContent(data.content);
         setTitle(data.frontmatter.title);
+        setSha(data.sha ?? null);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');
       } finally {
@@ -75,18 +77,22 @@ export default function EditorPage() {
       setSaveMessage(null);
 
       try {
-        const res = await fetch(`/api/mdx/${encodeURIComponent(slug)}`, {
+        const res = await fetch(`/api/admin/mdx/${encodeURIComponent(slug)}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ content: newContent }),
+          body: JSON.stringify({ content: newContent, sha }),
         });
 
         const data = await res.json();
 
         if (!res.ok) {
           throw new Error(data.error || 'Failed to save file');
+        }
+
+        if (typeof data?.sha === 'string' && data.sha) {
+          setSha(data.sha);
         }
 
         setSaveMessage({ type: 'success', text: '儲存成功！' });
@@ -102,7 +108,7 @@ export default function EditorPage() {
         setIsSaving(false);
       }
     },
-    [slug]
+    [sha, slug]
   );
 
   // 離開前確認

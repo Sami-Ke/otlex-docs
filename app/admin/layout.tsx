@@ -1,17 +1,15 @@
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { cookies } from 'next/headers';
 
 export const metadata = {
   title: 'Admin - MDX Editor',
   description: 'Edit MDX documentation files',
 };
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
-  // Server-side dev-only 檢查
-  if (process.env.NODE_ENV !== 'development') {
-    redirect('/docs');
-  }
+export default async function AdminLayout({ children }: { children: ReactNode }) {
+  const cookieStore = await cookies();
+  const hasSession = Boolean(cookieStore.get('session')?.value);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-950">
@@ -27,7 +25,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 MDX Editor
               </Link>
               <span className="px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200 rounded">
-                Dev Only
+                Admin
               </span>
             </div>
             <nav className="flex items-center gap-4">
@@ -37,6 +35,16 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               >
                 查看文件站 →
               </Link>
+              {hasSession && (
+                <form action="/api/admin/auth/logout" method="post">
+                  <button
+                    type="submit"
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                  >
+                    登出
+                  </button>
+                </form>
+              )}
             </nav>
           </div>
         </div>

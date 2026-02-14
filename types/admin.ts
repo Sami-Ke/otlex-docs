@@ -40,12 +40,16 @@ export interface MdxFileResponse {
   slug: string;
   content: string;
   frontmatter: MdxFrontmatter;
+  /** GitHub Contents API SHA（用於更新 PUT） */
+  sha?: string;
 }
 
 /** API 回應：寫入結果 */
 export interface MdxWriteResponse {
   success: boolean;
   message: string;
+  /** GitHub 回傳的新 SHA（成功時可能提供） */
+  sha?: string;
 }
 
 /** API 錯誤回應 */

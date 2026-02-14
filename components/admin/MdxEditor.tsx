@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, type RefObject } from 'react';
 import '@mdxeditor/editor/style.css';
 import {
   MDXEditor,
@@ -34,6 +34,7 @@ import {
   InsertImage,
   InsertTable,
   InsertThematicBreak,
+  ButtonWithTooltip,
   ListsToggle,
   DiffSourceToggleWrapper,
   Separator,
@@ -44,6 +45,33 @@ interface MdxEditorProps {
   initialContent: string;
   onSave: (content: string) => Promise<void>;
   isSaving?: boolean;
+}
+
+function InsertVideoButton({ editorRef }: { editorRef: RefObject<MDXEditorMethods | null> }) {
+  const handleInsertVideo = useCallback(() => {
+    const input = window.prompt('請輸入 YouTube / Vimeo 影片 URL');
+    const url = input?.trim();
+    if (!url) return;
+    if (url.includes('"')) {
+      // 直接避免破壞 JSX attribute；如有需要可改成更完整的 escape/encode。
+      window.alert('URL 不能包含雙引號 (")');
+      return;
+    }
+
+    const snippet = `\n<Video url="${url}" />\n`;
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    editor.focus(() => {
+      editor.insertMarkdown(snippet);
+    });
+  }, [editorRef]);
+
+  return (
+    <ButtonWithTooltip title="插入影片 (YouTube / Vimeo)" onClick={handleInsertVideo}>
+      <span className="text-xs">Video</span>
+    </ButtonWithTooltip>
+  );
 }
 
 // eslint-disable-next-line max-lines-per-function
@@ -121,13 +149,44 @@ export function MdxEditorComponent({ initialContent, onSave, isSaving }: MdxEdit
             linkPlugin(),
             linkDialogPlugin(),
 
-            // 圖片（僅支援 URL，不實作上傳）
+            // 圖片：支援 URL + 上傳（上傳走 /api/admin/upload）
             imagePlugin({
-              imageUploadHandler: async () => {
-                // 提示使用者貼入 URL
-                const url = window.prompt('請輸入圖片 URL:');
-                return url || '';
+              imageUploadHandler: async (file: File) => {
+                const formData = new FormData();
+                formData.append('image', file);
+
+                const res = await fetch('/api/admin/upload', {
+                  method: 'POST',
+                  body: formData,
+                });
+
+                let data: unknown = null;
+                try {
+                  data = await res.json();
+                } catch {
+                  // ignore
+                }
+
+                if (!res.ok) {
+                  const errMsg =
+                    typeof data === 'object' && data && 'error' in data
+                      ? String((data as { error: unknown }).error)
+                      : 'Upload failed';
+                  throw new Error(errMsg);
+                }
+
+                const url =
+                  typeof data === 'object' && data && 'url' in data
+                    ? String((data as { url: unknown }).url)
+                    : '';
+
+                if (!url) {
+                  throw new Error('Upload failed');
+                }
+
+                return url;
               },
+              imageAutocompleteSuggestions: [],
             }),
 
             // 表格
@@ -158,6 +217,7 @@ export function MdxEditorComponent({ initialContent, onSave, isSaving }: MdxEdit
                   <InsertImage />
                   <InsertTable />
                   <InsertThematicBreak />
+                  <InsertVideoButton editorRef={editorRef} />
                   <Separator />
                   <InsertFrontmatter />
                   <Separator />

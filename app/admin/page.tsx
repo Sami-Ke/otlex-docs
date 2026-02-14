@@ -41,7 +41,7 @@ export default function AdminPage() {
   useEffect(() => {
     async function fetchFiles() {
       try {
-        const res = await fetch('/api/mdx');
+        const res = await fetch('/api/admin/mdx');
         if (!res.ok) {
           throw new Error('Failed to fetch files');
         }
