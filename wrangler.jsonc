@@ -8,5 +8,6 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
-  "r2_buckets": [{ "binding": "DOCS_IMAGES", "bucket_name": "otlex-docs-images" }]
+  "r2_buckets": [{ "binding": "DOCS_IMAGES", "bucket_name": "otlex-docs-images" }],
+  "routes": [{ "pattern": "docs.otlex.io", "custom_domain": true }]
 }

@@ -103,7 +103,7 @@ function utf8ToBase64(value: string): string {
   }
 
   // Fallback for environments with Buffer.
-  // eslint-disable-next-line no-restricted-globals
+   
   const BufferCtor = (globalThis as unknown as { Buffer?: typeof Buffer }).Buffer;
   if (BufferCtor) return BufferCtor.from(value, 'utf-8').toString('base64');
 
@@ -122,7 +122,7 @@ function base64ToUtf8(value: string): string {
     return new TextDecoder().decode(bytes);
   }
 
-  // eslint-disable-next-line no-restricted-globals
+   
   const BufferCtor = (globalThis as unknown as { Buffer?: typeof Buffer }).Buffer;
   if (BufferCtor) return BufferCtor.from(cleaned, 'base64').toString('utf-8');
 
@@ -143,6 +143,7 @@ async function githubRequest<T>(
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
       'Content-Type': 'application/json',
+      'User-Agent': 'otlex-docs-admin',
     },
     body: body ? JSON.stringify(body) : undefined,
     cache: 'no-store',

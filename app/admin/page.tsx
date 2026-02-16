@@ -57,7 +57,6 @@ export default function AdminPage() {
     fetchFiles();
   }, []);
 
-  // 過濾檔案
   const filteredFiles = files.filter(
     (file) =>
       file.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -71,7 +70,7 @@ export default function AdminPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500 dark:text-gray-400">載入中...</div>
+        <div className="text-gray-500">載入中...</div>
       </div>
     );
   }
@@ -79,7 +78,7 @@ export default function AdminPage() {
   if (error) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-red-500">錯誤: {error}</div>
+        <div className="text-red-600">錯誤: {error}</div>
       </div>
     );
   }
@@ -89,10 +88,10 @@ export default function AdminPage() {
       {/* 頁面標題和搜尋 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-gray-900">
             文件列表
           </h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mt-1 text-sm text-gray-500">
             共 {files.length} 個 MDX 檔案
           </p>
         </div>
@@ -102,7 +101,7 @@ export default function AdminPage() {
             placeholder="搜尋檔案..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
       </div>
@@ -112,37 +111,37 @@ export default function AdminPage() {
         {directories.map((dir) => (
           <div
             key={dir}
-            className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden"
+            className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
           >
             {/* 目錄標題 */}
-            <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {dir === '(root)' ? '根目錄' : `📁 ${dir}`}
+            <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
+              <h2 className="text-sm font-medium text-gray-700">
+                {dir === '(root)' ? '根目錄' : dir}
               </h2>
             </div>
 
             {/* 檔案列表 */}
-            <ul className="divide-y divide-gray-200 dark:divide-gray-800">
+            <ul className="divide-y divide-gray-100">
               {groupedFiles[dir].map((file) => (
                 <li key={file.slug}>
                   <Link
-                    href={`/admin/editor/${encodeURIComponent(file.slug)}`}
-                    className="block px-4 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    href={`/admin/editor/${file.slug}`}
+                    className="block px-4 py-4 hover:bg-blue-50 transition-colors"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                        <p className="text-sm font-medium text-gray-900 truncate">
                           {file.title}
                         </p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                        <p className="text-sm text-gray-500 truncate">
                           {file.description || '(無描述)'}
                         </p>
-                        <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+                        <p className="mt-1 text-xs text-gray-400">
                           {file.slug}.mdx
                         </p>
                       </div>
                       <div className="ml-4 flex-shrink-0">
-                        <p className="text-xs text-gray-400 dark:text-gray-500">
+                        <p className="text-xs text-gray-400">
                           {formatDate(file.lastModified)}
                         </p>
                       </div>
@@ -157,7 +156,7 @@ export default function AdminPage() {
 
       {filteredFiles.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-gray-500">
             {searchTerm ? '找不到符合的檔案' : '沒有 MDX 檔案'}
           </p>
         </div>

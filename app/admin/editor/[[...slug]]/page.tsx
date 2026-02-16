@@ -13,7 +13,7 @@ const MdxEditorComponent = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500 dark:text-gray-400">載入編輯器中...</div>
+        <div className="text-gray-500">載入編輯器中...</div>
       </div>
     ),
   }
@@ -26,7 +26,8 @@ export default function EditorPage() {
 
   // 從 URL 取得 slug（可能是陣列或字串）
   const slugParam = params?.slug;
-  const slug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam || '';
+  const rawSlug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam || '';
+  const slug = decodeURIComponent(rawSlug);
 
   const [content, setContent] = useState<string | null>(null);
   const [title, setTitle] = useState<string>('');
@@ -125,7 +126,7 @@ export default function EditorPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500 dark:text-gray-400">載入中...</div>
+        <div className="text-gray-500">載入中...</div>
       </div>
     );
   }
@@ -147,36 +148,47 @@ export default function EditorPage() {
   return (
     <div className="h-[calc(100vh-56px)] flex flex-col">
       {/* 頂部麵包屑 */}
-      <div className="flex items-center justify-between px-4 py-2 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+      <div className="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-200">
         <div className="flex items-center gap-2 text-sm">
           <Link
             href="/admin"
-            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            className="text-gray-500 hover:text-gray-700"
           >
             文件列表
           </Link>
-          <span className="text-gray-400 dark:text-gray-600">/</span>
-          <span className="text-gray-900 dark:text-white font-medium">
+          <span className="text-gray-400">/</span>
+          <span className="text-gray-900 font-medium">
             {title || slug}
           </span>
         </div>
+
+        <div className="flex items-center gap-2">
+          <a
+            href={`/docs/${slug.replace(/\/index$/, '')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm px-3 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors"
+          >
+            預覽 ↗
+          </a>
 
         {/* 儲存訊息 */}
         {saveMessage && (
           <div
             className={`text-sm px-3 py-1 rounded ${
               saveMessage.type === 'success'
-                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                ? 'bg-green-100 text-green-800'
+                : 'bg-red-100 text-red-800'
             }`}
           >
             {saveMessage.text}
           </div>
         )}
+        </div>
       </div>
 
       {/* 編輯器 */}
-      <div className="flex-1 bg-white dark:bg-gray-900">
+      <div className="flex-1 bg-white">
         {content !== null && (
           <MdxEditorComponent
             initialContent={content}

@@ -1,7 +1,8 @@
 'use client';
 
-import { useCallback, useRef, useState, type RefObject } from 'react';
+import { useCallback, useMemo, useRef, useState, type RefObject } from 'react';
 import '@mdxeditor/editor/style.css';
+import './mdx-editor-overrides.css';
 import {
   MDXEditor,
   type MDXEditorMethods,
@@ -19,12 +20,17 @@ import {
   tablePlugin,
   // 程式碼
   codeBlockPlugin,
+  codeMirrorPlugin,
   // Frontmatter
   frontmatterPlugin,
   // 工具列
   toolbarPlugin,
   // Diff/Source 模式
   diffSourcePlugin,
+  // JSX 支援
+  jsxPlugin,
+  type JsxComponentDescriptor,
+  GenericJsxEditor,
   // 工具列元件
   UndoRedo,
   BoldItalicUnderlineToggles,
@@ -74,10 +80,120 @@ function InsertVideoButton({ editorRef }: { editorRef: RefObject<MDXEditorMethod
   );
 }
 
+/** codeMirrorPlugin 語言對照表（涵蓋 repo 內 MDX 實際使用的語言） */
+const codeBlockLanguages: Record<string, string> = {
+  '': 'Plain',
+  text: 'Text',
+  txt: 'Text',
+  json: 'JSON',
+  html: 'HTML',
+  xml: 'XML',
+  css: 'CSS',
+  nginx: 'Nginx',
+  apache: 'Apache',
+  ts: 'TypeScript',
+  tsx: 'TSX',
+  js: 'JavaScript',
+  jsx: 'JSX',
+  typescript: 'TypeScript',
+  javascript: 'JavaScript',
+  bash: 'Bash',
+  sh: 'Shell',
+  sql: 'SQL',
+  python: 'Python',
+  yaml: 'YAML',
+  markdown: 'Markdown',
+};
+
+/** Fumadocs / 自訂 MDX 元件描述（讓編輯器認識 JSX） */
+const jsxComponentDescriptors: JsxComponentDescriptor[] = [
+  {
+    name: 'Callout',
+    kind: 'flow',
+    hasChildren: true,
+    props: [{ name: 'type', type: 'string' }, { name: 'title', type: 'string' }],
+    Editor: GenericJsxEditor,
+  },
+  {
+    name: 'Card',
+    kind: 'flow',
+    hasChildren: false,
+    props: [{ name: 'title', type: 'string' }, { name: 'href', type: 'string' }, { name: 'icon', type: 'string' }],
+    Editor: GenericJsxEditor,
+  },
+  {
+    name: 'Cards',
+    kind: 'flow',
+    hasChildren: true,
+    props: [],
+    Editor: GenericJsxEditor,
+  },
+  {
+    name: 'Steps',
+    kind: 'flow',
+    hasChildren: true,
+    props: [],
+    Editor: GenericJsxEditor,
+  },
+  {
+    name: 'Step',
+    kind: 'flow',
+    hasChildren: true,
+    props: [{ name: 'title', type: 'string' }],
+    Editor: GenericJsxEditor,
+  },
+  {
+    name: 'Video',
+    kind: 'flow',
+    hasChildren: false,
+    props: [{ name: 'url', type: 'string' }],
+    Editor: GenericJsxEditor,
+  },
+];
+
+/** 為沒有語言標記的 code block 補上 `text`，避免 rich-text 模式解析失敗 */
+function preprocessMarkdown(markdown: string): string {
+  let inCodeBlock = false;
+  let fenceChar = '';
+  let fenceCount = 0;
+
+  return markdown.split('\n').map(line => {
+    const trimmed = line.trimEnd();
+
+    if (inCodeBlock) {
+      const closeMatch = trimmed.match(/^(`{3,}|~{3,})\s*$/);
+      if (closeMatch && closeMatch[1][0] === fenceChar && closeMatch[1].length >= fenceCount) {
+        inCodeBlock = false;
+      }
+      return line;
+    }
+
+    // 開啟 fence 但沒有語言 → 補上 text
+    const openNoLang = trimmed.match(/^(`{3,}|~{3,})\s*$/);
+    if (openNoLang) {
+      inCodeBlock = true;
+      fenceChar = openNoLang[1][0];
+      fenceCount = openNoLang[1].length;
+      return openNoLang[1] + 'text';
+    }
+
+    // 開啟 fence 且有語言
+    const openWithLang = trimmed.match(/^(`{3,}|~{3,})\S/);
+    if (openWithLang) {
+      inCodeBlock = true;
+      fenceChar = openWithLang[1][0];
+      fenceCount = openWithLang[1].length;
+    }
+
+    return line;
+  }).join('\n');
+}
+
 // eslint-disable-next-line max-lines-per-function
 export function MdxEditorComponent({ initialContent, onSave, isSaving }: MdxEditorProps) {
   const editorRef = useRef<MDXEditorMethods>(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const processedContent = useMemo(() => preprocessMarkdown(initialContent), [initialContent]);
 
   const handleSave = useCallback(async () => {
     if (editorRef.current) {
@@ -105,15 +221,15 @@ export function MdxEditorComponent({ initialContent, onSave, isSaving }: MdxEdit
   return (
     <div className="flex flex-col h-full" onKeyDown={handleKeyDown}>
       {/* 頂部狀態列 */}
-      <div className="flex items-center justify-between px-4 py-2 border-b bg-gray-50 dark:bg-gray-900">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 bg-gray-50">
         <div className="flex items-center gap-2">
           {hasChanges && (
-            <span className="text-sm text-amber-600 dark:text-amber-400">
+            <span className="text-sm text-amber-600">
               有未儲存的變更
             </span>
           )}
           {!hasChanges && (
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-gray-500">
               已儲存
             </span>
           )}
@@ -131,9 +247,10 @@ export function MdxEditorComponent({ initialContent, onSave, isSaving }: MdxEdit
       <div className="flex-1 overflow-auto">
         <MDXEditor
           ref={editorRef}
-          markdown={initialContent}
+          markdown={processedContent}
           onChange={handleChange}
-          contentEditableClassName="prose prose-sm sm:prose lg:prose-lg dark:prose-invert max-w-none p-4 min-h-[500px] focus:outline-none"
+          onError={() => {/* 抑制 rich-text 解析警告，source 模式不受影響 */}}
+          contentEditableClassName="prose prose-sm sm:prose lg:prose-lg max-w-none p-4 min-h-[500px] focus:outline-none"
           plugins={[
             // Frontmatter 編輯
             frontmatterPlugin(),
@@ -192,10 +309,14 @@ export function MdxEditorComponent({ initialContent, onSave, isSaving }: MdxEdit
             // 表格
             tablePlugin(),
 
-            // 程式碼區塊
-            codeBlockPlugin({ defaultCodeBlockLanguage: 'typescript' }),
+            // 程式碼區塊（codeMirrorPlugin 提供 rich-text 模式的 CodeBlockEditorDescriptor）
+            codeBlockPlugin({ defaultCodeBlockLanguage: 'text' }),
+            codeMirrorPlugin({ codeBlockLanguages }),
 
-            // Diff/Source 模式
+            // JSX 元件支援（Callout, Card, Cards, Steps, Step, Video）
+            jsxPlugin({ jsxComponentDescriptors }),
+
+            // Diff/Source 模式（預設 source，避免自訂 JSX 解析失敗）
             diffSourcePlugin({
               viewMode: 'rich-text',
             }),

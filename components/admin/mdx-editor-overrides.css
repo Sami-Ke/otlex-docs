@@ -1,0 +1,111 @@
+/* ============================
+   MDXEditor 白色主題微調
+   （已由 ForceLightMode 強制 light mode，
+     此處只做細節補強）
+   ============================ */
+
+/* 編輯器根容器 */
+.mdxeditor {
+  background: #ffffff;
+}
+
+/* JSX 元件容器（Callout、Cards 等）：淡藍底以區分 */
+.mdxeditor [class*="jsxEditor"],
+.mdxeditor [class*="nestedEditor"] {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+}
+
+/* Frontmatter 編輯區：淡黃底 */
+.mdxeditor [class*="frontmatterEditor"],
+.mdxeditor [class*="propertyPanelContent"] {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+/* 行內程式碼：淺灰底紅字 */
+.mdxeditor code:not(pre code) {
+  background: #f3f4f6;
+  color: #dc2626;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+/* 解析錯誤提示 */
+[class*="markdownParseError"],
+[class*="_markdownParseError"] {
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: #fef3c7;
+  color: #92400e;
+  border-bottom: 1px solid #fcd34d;
+}
+
+/* ============================
+   表格：強制 light 樣式（安全網）
+   即使 ForceLightMode 有延遲，
+   表格也能正常顯示
+   ============================ */
+
+.mdxeditor table {
+  background: #ffffff;
+  border-collapse: collapse;
+}
+
+.mdxeditor th {
+  background: #f9fafb;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.mdxeditor td {
+  background: #ffffff;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+}
+
+.mdxeditor tr:nth-child(even) td {
+  background: #f9fafb;
+}
+
+/* ============================
+   Source 模式（CodeMirror）深色
+   寫程式碼用深色是標準
+   ============================ */
+
+.mdxeditor-diff-source-wrapper .cm-editor {
+  background: #1e1e2e;
+}
+
+.mdxeditor-diff-source-wrapper .cm-editor .cm-gutters {
+  background: #181825;
+  border-right: 1px solid #313244;
+  color: #6c7086;
+}
+
+.mdxeditor-diff-source-wrapper .cm-editor .cm-content {
+  color: #cdd6f4;
+}
+
+.mdxeditor-diff-source-wrapper .cm-editor .cm-cursor {
+  border-left-color: #cdd6f4;
+}
+
+.mdxeditor-diff-source-wrapper .cm-editor .cm-activeLine {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.mdxeditor-diff-source-wrapper .cm-editor .cm-activeLineGutter {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mdxeditor-diff-source-wrapper .cm-editor .cm-selectionBackground {
+  background: rgba(137, 180, 250, 0.2) !important;
+}
