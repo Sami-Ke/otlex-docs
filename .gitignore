@@ -8,6 +8,7 @@ out
 
 # Build
 dist
+.open-next
 
 # Generated
 .source
