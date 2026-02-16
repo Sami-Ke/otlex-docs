@@ -55,24 +55,38 @@
   border-collapse: collapse;
 }
 
-.mdxeditor th {
-  background: #f9fafb;
-  color: #111827;
-  border: 1px solid #e5e7eb;
+/* MDXEditor 控制列（欄/列操作按鈕）：透明不干擾 */
+.mdxeditor thead th,
+.mdxeditor th[class*="toolCell"],
+.mdxeditor td[class*="toolCell"],
+.mdxeditor th[class*="tableToolsColumn"] {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* 實際表頭儲存格（排除控制用 th） */
+.mdxeditor tbody th:not([class*="toolCell"]):not([class*="tableTools"]) {
+  background: #e2e8f0;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-bottom: 2px solid #94a3b8;
   padding: 0.5rem 0.75rem;
   font-weight: 600;
   text-align: left;
 }
 
-.mdxeditor td {
+/* 資料儲存格（排除控制用 td） */
+.mdxeditor td:not([class*="toolCell"]):not([class*="tableTools"]) {
   background: #ffffff;
-  color: #1f2937;
-  border: 1px solid #e5e7eb;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
   padding: 0.5rem 0.75rem;
 }
 
-.mdxeditor tr:nth-child(even) td {
-  background: #f9fafb;
+/* 斑馬紋 */
+.mdxeditor tbody tr:nth-child(even) td:not([class*="toolCell"]) {
+  background: #f8fafc;
 }
 
 /* ============================
