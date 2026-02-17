@@ -1,6 +1,6 @@
 ---
 title: 頁面類型判斷
-description: 了解 Otlex 如何自動判斷頁面類型，以及不同類型如何影響稽核建議與評分
+description: 了解 Otlex 如何自動判斷頁面類型，以及不同類型如何影響審查建議與評分
 ---
 
 ## 什麼是頁面類型？
@@ -9,7 +9,7 @@ description: 了解 Otlex 如何自動判斷頁面類型，以及不同類型如
 
 Otlex 會自動分析頁面內容，判斷頁面屬於哪種類型，並據此：
 
-- 調整適用的稽核建議
+- 調整適用的審查建議
 - 修改評分權重
 - 提供類型專屬的優化提示
 
@@ -61,7 +61,7 @@ Otlex 能夠識別以下七種頁面類型：
 
 **專屬建議：**
 - ✅ 新增 ItemList Schema
-- ✅ 檢查分頁設定（rel="next/prev" 或 canonical）
+- ✅ 檢查分頁設定（canonical 策略、確保各分頁可爬取；Google 已不再使用 rel="next/prev" 訊號）
 - ✅ 確認列表項目有適當連結
 - ❌ 不會強調內容深度（列表頁本來內容較少）
 
@@ -204,7 +204,7 @@ Otlex 使用多重因素來判斷頁面類型：
 
 ### 修正步驟
 
-1. 在稽核結果頁面找到「頁面類型」區塊
+1. 在審查結果頁面找到「頁面類型」區塊
 2. 點擊「修正類型」按鈕
 3. 從下拉選單選擇正確的類型
 4. 點擊「更新」
@@ -217,7 +217,7 @@ Otlex 使用多重因素來判斷頁面類型：
 - 可能新增之前沒有的建議
 
 <Callout type="info">
-  手動設定的類型會被記住，下次稽核同一頁面時會優先使用你設定的類型。
+  手動設定的類型會被記住，下次審查同一頁面時會優先使用你設定的類型。
 </Callout>
 
 ## 常見問題
@@ -237,7 +237,7 @@ Otlex 的類型判斷只用於內部評分和建議生成，不會影響 Google 
 ## 下一步
 
 <Cards>
-  <Card title="定期稽核設定" href="/docs/seo-audit/scheduled-audits" />
-  <Card title="整站稽核" href="/docs/seo-audit/site-audit" />
-  <Card title="理解稽核建議" href="/docs/seo-audit/understanding-recommendations" />
+  <Card title="定期審查設定" href="/docs/seo-audit/scheduled-audits" />
+  <Card title="整站審查" href="/docs/seo-audit/site-audit" />
+  <Card title="理解審查建議" href="/docs/seo-audit/understanding-recommendations" />
 </Cards>

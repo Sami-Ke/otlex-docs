@@ -1,6 +1,6 @@
 ---
 title: FAQ Schema 工具
-description: 快速生成符合 Google Rich Results 規範的 FAQ Schema，提升搜尋結果曝光度
+description: 快速生成符合 Google Rich Results 規範的 FAQ Schema，有機會提升搜尋結果可見度
 ---
 
 ## 你可以用它做什麼
@@ -12,8 +12,8 @@ FAQ Schema 工具幫助你產生結構化資料，讓頁面在搜尋結果中顯
 - **即時預覽**：看到 JSON-LD 程式碼的格式
 - **一鍵匯出**：複製程式碼貼到你的網站
 
-<Callout type="info">
-  FAQ Schema 正確實作後，你的頁面可能在搜尋結果中顯示「常見問題」區塊，增加曝光面積和點擊率。這對 SEO 有正面影響。
+<Callout type="warning">
+  Google 自 2023 年 8 月起大幅限制 FAQ Rich Results 的顯示資格，目前僅政府和醫療類權威網站較可能顯示。一般網站實作 FAQ Schema 後，搜尋結果不一定會出現展開式 FAQ 區塊。儘管如此，結構化資料仍有助於搜尋引擎理解頁面內容，對 AEO（AI 搜尋優化）也有正面影響。
 </Callout>
 
 ## 快速開始
@@ -39,7 +39,7 @@ FAQ Schema（FAQPage）是一種結構化資料格式，用 JSON-LD 語法告訴
 
 ### 效果展示
 
-實作 FAQ Schema 後，搜尋結果可能變成：
+若符合 Google 的顯示條件，實作 FAQ Schema 後搜尋結果可能變成：
 
 ```
 你的網頁標題
@@ -267,8 +267,8 @@ A: 答案 2。
 ### 問題撰寫技巧
 
 好的問題：
-- 「如何開始使用 Otlex 的 SEO 稽核功能？」
-- 「SEO 稽核報告多久會產生？」
+- 「如何開始使用 Otlex 的 SEO 審查功能？」
+- 「SEO 審查報告多久會產生？」
 - 「免費方案包含哪些功能？」
 
 不好的問題：
@@ -296,7 +296,7 @@ A: 答案 2。
 
 | 功能 | 如何搭配 |
 |------|----------|
-| **SEO 稽核** | 稽核發現缺少 Schema → 用此工具補上 |
+| **SEO 審查** | 審查發現缺少 Schema → 用此工具補上 |
 | **AI 內容生成** | 文章生成後可加 FAQ 增強 |
 | **內容地圖** | 找出重要頁面優先加 FAQ |
 
@@ -305,6 +305,6 @@ A: 答案 2。
 <Cards>
   <Card title="內部連結工具" href="/docs/tools/internal-links" />
   <Card title="關鍵字研究" href="/docs/tools/keyword-research" />
-  <Card title="SEO 稽核" href="/docs/seo-audit" />
+  <Card title="SEO 審查" href="/docs/seo-audit" />
   <Card title="AI 內容生成" href="/docs/ai-content" />
 </Cards>

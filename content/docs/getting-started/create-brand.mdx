@@ -15,7 +15,7 @@ description: 詳細說明如何在 Otlex 中建立品牌，設定網站網址並
 |---------|------|
 | 網站網址 | 你要優化的網站首頁 URL |
 | 內容庫 | 該網站的所有已爬取頁面 |
-| 稽核記錄 | SEO 稽核的歷史分數與建議 |
+| 審查記錄 | SEO 審查的歷史分數與建議 |
 | 主題規劃 | AI 建議的內容主題與你的主題草稿 |
 | 文章內容 | 使用 AI 生成或手動建立的文章 |
 | 整合設定 | Google Search Console、Analytics 等連接 |
@@ -107,8 +107,8 @@ description: 詳細說明如何在 Otlex 中建立品牌，設定網站網址並
 品牌建立完成後，建議按照以下順序進行設定：
 
 1. **連接 Google Search Console** - 獲取真實的搜尋排名數據
-2. **等待首次爬取完成** - 系統會自動爬取網站並建立內容庫
-3. **執行第一次 SEO 稽核** - 了解網站的 SEO 健康度
+2. **等待首次爬取完成** - 系統會爬取網站並建立內容庫（首次爬取是否自動觸發依環境設定而異，也可在「設定 > 網站管理」手動啟動）
+3. **執行第一次 SEO 審查** - 了解網站的 SEO 健康度
 4. **探索內容地圖** - 視覺化了解網站結構
 
 ## 管理現有品牌
@@ -124,7 +124,7 @@ description: 詳細說明如何在 Otlex 中建立品牌，設定網站網址並
 ### 刪除品牌
 
 <Callout type="error">
-  刪除品牌會永久移除該品牌的所有數據，包含稽核記錄、內容、主題等。此操作無法復原。
+  刪除品牌會永久移除該品牌的所有數據，包含審查記錄、內容、主題等。此操作無法復原。
 </Callout>
 
 一般使用者帳號通常不會開放品牌刪除入口；如需刪除品牌，請聯繫管理員或客服協助處理。
@@ -144,12 +144,12 @@ description: 詳細說明如何在 Otlex 中建立品牌，設定網站網址並
 可以，但修改網址後：
 - 原有的爬取內容將被清除
 - 需要重新連接 Google Search Console
-- 稽核歷史會保留但不再具有對比意義
+- 審查歷史會保留但不再具有對比意義
 
 ## 下一步
 
 <Cards>
   <Card title="連接 Google Search Console" href="/docs/getting-started/connect-gsc" />
-  <Card title="執行第一次 SEO 稽核" href="/docs/getting-started/first-audit" />
+  <Card title="執行第一次 SEO 審查" href="/docs/getting-started/first-audit" />
   <Card title="設定品牌風格" href="/docs/ai-content/brand-style" />
 </Cards>

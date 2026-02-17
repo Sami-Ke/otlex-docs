@@ -94,12 +94,12 @@ AI Bot Tracking 讓你追蹤來自 AI 生態系統的流量，這是傳統 Googl
 
 ### Bot Provider（AI 爬蟲機器人）
 
-| Provider | User-Agent 特徵 | 說明 |
+| Provider | 識別特徵（User-Agent / robots.txt token） | 說明 |
 |----------|-----------------|------|
 | OpenAI | GPTBot, ChatGPT-User | ChatGPT 訓練與即時搜尋 |
 | Anthropic | anthropic-ai, Claude-Web | Claude 相關爬蟲 |
 | Perplexity | PerplexityBot | Perplexity AI 搜尋 |
-| Google | Google-Extended | Bard/Gemini 訓練資料 |
+| Google | Google-Extended（robots.txt token，用於控制 AI 訓練爬取） | Bard/Gemini 訓練資料收集 |
 | Microsoft | bingbot (AI variant) | Bing AI 相關爬蟲 |
 | Meta | meta-externalagent | Meta AI 爬蟲 |
 | xAI | Grok | Grok 相關爬蟲 |
@@ -273,7 +273,7 @@ llms.txt 是一個新興標準，讓你告訴 AI 如何使用你的內容：
 
 ### 與其他功能整合
 
-- **SEO 稽核**：高 AI 流量頁面優先做 AEO（Answer Engine Optimization）檢查
+- **SEO 審查**：高 AI 流量頁面優先做 AEO（Answer Engine Optimization）檢查
 - **內容地圖**：檢查高 AI 流量頁面的內部連結是否充足
 - **排名追蹤**：對比 Google 排名和 AI 流量的相關性
 
@@ -282,6 +282,6 @@ llms.txt 是一個新興標準，讓你告訴 AI 如何使用你的內容：
 <Cards>
   <Card title="連接 Google Search Console" href="/docs/integrations/google-search-console" />
   <Card title="排名追蹤" href="/docs/ranking" />
-  <Card title="執行 SEO 稽核" href="/docs/getting-started/first-audit" />
+  <Card title="執行 SEO 審查" href="/docs/getting-started/first-audit" />
   <Card title="內容地圖" href="/docs/content-map" />
 </Cards>

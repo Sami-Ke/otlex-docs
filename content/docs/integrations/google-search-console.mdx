@@ -81,8 +81,8 @@ Google Search Console (GSC) 是 Otlex **最重要** 的整合。它提供你的�
 
 | 資源類型 | 範例 | 說明 |
 |---------|------|------|
-| **網域資源** | example.com | 涵蓋所有子網域和協定 |
-| **網址前置字元** | https://www.example.com/ | 只涵蓋特定 URL 格式 |
+| **網域資源** | `sc-domain:example.com` | 涵蓋所有子網域和協定 |
+| **網址前置字元** | `https://www.example.com/` | 只涵蓋特定 URL 格式 |
 
 **建議**：優先選擇「網域資源」，數據最完整。
 
@@ -149,7 +149,7 @@ GSC 數據通常有 **2-3 天延遲**，這是 Google 的限制，非 Otlex 造�
 
 ### 頁面數據
 
-在「頁面分析」或稽核結果中：
+在「頁面分析」或審查結果中：
 
 | 數據 | 說明 |
 |-----|------|
@@ -213,14 +213,14 @@ Google OAuth Token 可能過期（通常 6 個月），需要重新授權：
 4. 選擇新的 GSC 資源
 
 <Callout type="warning">
-  切換資源會清除舊的歷史數據，新數據會重新同步。
+  切換資源後，新資源的數據會重新同步。舊資源的歷史數據可能會被覆蓋，具體保留行為以系統版本為準。
 </Callout>
 
 ## 常見問題
 
 ### GSC 顯示多個資源，該選哪個？
 
-- 如果有**網域資源**（如 `example.com`），優先選擇
+- 如果有**網域資源**（如 `sc-domain:example.com`），優先選擇
 - 如果只有**網址前置字元**，選擇與品牌網址最匹配的
 
 ### 可以連接多個 GSC 資源嗎？
@@ -234,7 +234,7 @@ Google OAuth Token 可能過期（通常 6 個月），需要重新授權：
 ### 中斷連接後會怎樣？
 
 - Otlex 不再能存取 GSC 數據
-- 歷史數據會保留一段時間
+- 已同步的歷史數據是否保留，依系統版本與設定而異
 - 需要重新連接才能獲取新數據
 
 ## 下一步
@@ -242,5 +242,5 @@ Google OAuth Token 可能過期（通常 6 個月），需要重新授權：
 <Cards>
   <Card title="連接 Google Analytics" href="/docs/integrations/google-analytics" />
   <Card title="設定 CMS 整合" href="/docs/integrations/cms-integrations" />
-  <Card title="執行第一次稽核" href="/docs/getting-started/first-audit" />
+  <Card title="執行第一次審查" href="/docs/getting-started/first-audit" />
 </Cards>

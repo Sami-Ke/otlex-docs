@@ -240,7 +240,7 @@ description: 檢測網站內的重複或相似頁面，避免 SEO 排名受影�
 
 | 來源 | 預防方式 |
 |------|----------|
-| URL 參數（?sort=、?page=） | 設定 parameter handling in GSC |
+| URL 參數（?sort=、?page=） | 用 Canonical 標籤指向無參數版本，或在伺服器端統一處理 |
 | www vs non-www | 統一並設定 301 |
 | http vs https | 強制 HTTPS + 301 |
 | 列印版/行動版 | 設定 Canonical |
@@ -257,7 +257,7 @@ description: 檢測網站內的重複或相似頁面，避免 SEO 排名受影�
 ## 下一步
 
 <Cards>
-  <Card title="SEO 稽核" href="/docs/seo-audit" />
+  <Card title="SEO 審查" href="/docs/seo-audit" />
   <Card title="內容地圖" href="/docs/content-map" />
   <Card title="內部連結工具" href="/docs/tools/internal-links" />
   <Card title="關鍵字研究" href="/docs/tools/keyword-research" />
