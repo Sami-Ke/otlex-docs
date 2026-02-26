@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createSession, hashPassword } from '@/lib/auth';
+import { createSession, verifyPassword } from '@/lib/auth';
+import {
+  checkLoginThrottle,
+  clearLoginFailures,
+  getLoginThrottleKey,
+  recordLoginFailure,
+} from '@/lib/admin-login-throttle';
 
 type LoginBody = { password?: unknown };
 
@@ -26,6 +32,18 @@ async function readPassword(request: NextRequest): Promise<string | null> {
 }
 
 export async function POST(request: NextRequest) {
+  const throttleKey = getLoginThrottleKey(request);
+  const throttle = checkLoginThrottle(throttleKey);
+  if (throttle.blocked) {
+    const response = NextResponse.json(
+      { error: 'Too many login attempts. Please try again later.' },
+      { status: 429 }
+    );
+    response.headers.set('Retry-After', String(throttle.retryAfterSeconds));
+    response.headers.set('Cache-Control', 'no-store');
+    return response;
+  }
+
   const password = await readPassword(request);
   if (!password) {
     return NextResponse.json({ error: 'Missing password' }, { status: 400 });
@@ -39,9 +57,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const providedHash = (await hashPassword(password)).toLowerCase();
-  if (providedHash !== expectedHash) {
-    return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+  const isValidPassword = await verifyPassword(password, expectedHash);
+  if (!isValidPassword) {
+    const failedState = recordLoginFailure(throttleKey);
+    const response = NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+    response.headers.set('Cache-Control', 'no-store');
+    if (failedState.blocked) {
+      response.headers.set('Retry-After', String(failedState.retryAfterSeconds));
+    }
+    return response;
   }
 
   const secret = (process.env.ADMIN_JWT_SECRET ?? '').trim();
@@ -53,6 +77,7 @@ export async function POST(request: NextRequest) {
   }
 
   const token = await createSession(secret);
+  clearLoginFailures(throttleKey);
 
   const res = NextResponse.json({ success: true }, { status: 200 });
   res.headers.set('Cache-Control', 'no-store');
@@ -67,4 +92,3 @@ export async function POST(request: NextRequest) {
 
   return res;
 }
-
