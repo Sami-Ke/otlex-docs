@@ -90,7 +90,7 @@ export default function HomePage() {
           <p className="text-gray-600 dark:text-gray-400">
             找不到答案？
             <a
-              href="mailto:support@otlex.com"
+              href="mailto:support@ethorx.com"
               className="ml-2 text-blue-600 dark:text-blue-400 hover:underline"
             >
               聯繫支援團隊
